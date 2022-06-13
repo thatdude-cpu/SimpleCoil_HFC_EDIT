@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/player_preset_juggernaut_item"
+        android:title="@string/player_preset_juggernaut" />
+    <item
+        android:id="@+id/player_preset_recon_item"
+        android:title="@string/player_preset_recon" />
+    <item
+        android:id="@+id/player_preset_tank_item"
+        android:title="@string/player_preset_tank" />
+    <item
+        android:id="@+id/player_preset_medic_item"
+        android:title="@string/player_preset_medic" />
+</menu>

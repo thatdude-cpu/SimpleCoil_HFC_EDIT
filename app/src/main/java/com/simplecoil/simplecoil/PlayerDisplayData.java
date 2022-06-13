@@ -24,4 +24,6 @@ public class PlayerDisplayData {
     boolean overrideLives;
     int lives;
     boolean isConnected;
+    String playerPreset;
+    String weaponPreset;
 }

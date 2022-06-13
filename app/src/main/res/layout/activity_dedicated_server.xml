@@ -7,7 +7,10 @@
     android:id="@+id/main_view"
     tools:context="com.simplecoil.simplecoil.FullscreenActivity">
 
-    <!-- This FrameLayout insets its children based on system windows using
+
+
+    <!-- //TODO fix overlaps
+        This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <RelativeLayout
         android:id="@+id/connect_layout"
@@ -20,9 +23,9 @@
             android:id="@+id/version_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
-            android:layout_alignParentEnd="true"
             android:text=""
             android:textAppearance="@android:style/TextAppearance.Material.Small.Inverse" />
 
@@ -30,29 +33,28 @@
             android:id="@+id/server_ip_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/use_network_button"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="5dp"
-            android:text=""
+            android:layout_marginTop="10dp"
+            android:text="@string/serverip"
             android:textAppearance="@android:style/TextAppearance.Material.Small.Inverse" />
 
         <Chronometer
             android:id="@+id/game_timer_chronometer"
             style="@android:style/TextAppearance.Material.Small.Inverse"
-            android:format="%s"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/server_ip_tv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="15dp"/>
+            android:layout_alignTop="@id/game_countdown_tv"
+            android:format="%s"
+            tools:layout_toEndOf="@id/server_ip_tv" />
 
         <TextView
             android:id="@+id/game_countdown_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/server_ip_tv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="15dp"
+            android:layout_centerHorizontal="false"
+            android:layout_marginStart="50dp"
+            android:layout_toEndOf="@id/server_ip_tv"
             android:text=""
             android:textAppearance="@android:style/TextAppearance.Material.Small.Inverse" />
 
@@ -70,8 +72,8 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_below="@id/player_count_tv"
+            android:layout_marginStart="10dp"
             android:text="@string/game_mode_toggle_button" />
 
         <TextView
@@ -88,9 +90,9 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_alignParentEnd="true"
             android:layout_below="@id/player_count_tv"
+            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@id/game_status_tv"
             android:text="@string/game_limit_button" />
 
         <TextView
@@ -99,6 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/game_mode_toggle_button"
             android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@id/game_mode_toggle_button"
             android:text="@string/dedicated_game_waiting"
             android:textAppearance="@android:style/TextAppearance.Material.Small.Inverse" />
 
@@ -107,8 +110,8 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_below="@id/game_mode_toggle_button"
+            android:layout_marginStart="10dp"
             android:text="@string/gps_mode_disabled" />
 
         <Button
@@ -116,9 +119,8 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_alignParentEnd="true"
             android:layout_below="@id/game_limit_button"
+            android:layout_alignParentEnd="true"
             android:enabled="false"
             android:text="@string/end_game_button" />
 
@@ -127,9 +129,9 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@id/end_game_button"
-            android:layout_below="@id/game_limit_button"
+            android:layout_alignTop="@id/gps_mode_button"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@id/gps_mode_button"
             android:enabled="true"
             android:text="@string/start_game_button" />
 
@@ -159,4 +161,5 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/only_server_settings_switch" />
     </RelativeLayout>
+
 </FrameLayout>
