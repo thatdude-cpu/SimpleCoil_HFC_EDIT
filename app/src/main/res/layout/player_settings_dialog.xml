@@ -71,6 +71,13 @@
             android:text="@string/player_settings_allow_player_settings"
             android:textColor="#000000" />
 
+        <Switch
+            android:id="@+id/vibrate_phone_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/vibrate_phone_switch"
+            android:visibility="visible" />
+
         <TextView
             android:id="@+id/health_title"
             android:layout_width="wrap_content"

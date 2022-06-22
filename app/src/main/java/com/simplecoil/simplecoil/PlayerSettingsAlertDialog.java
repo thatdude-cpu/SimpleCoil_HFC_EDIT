@@ -49,6 +49,7 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
     private Button mFiringModeButton = null;
     private Button mResetButton = null;
     private Switch mApplyAllSwitch = null;
+    private Switch mVibratePhoneSwitch = null;
     private Switch mAllowPlayerSettingsSwitch = null;
     private Button mWeaponPresetButton = null;
     private Button mPlayerPresetButton = null;
@@ -213,6 +214,10 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
         //TODO presets apply to all players
         //aplying settings to player
         mAllowPlayerSettingsSwitch = view.findViewById(R.id.allow_player_settings_switch);
+        //TODO vibrate switch
+        mVibratePhoneSwitch = view.findViewById(R.id.vibrate_phone_switch);
+
+
         mApplyAllSwitch = view.findViewById(R.id.apply_to_all_switch);
         setButton(DialogInterface.BUTTON_POSITIVE, mContext.getString(R.string.ok),
                 (dialog, which) -> {

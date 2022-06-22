@@ -134,7 +134,7 @@
     <string name="player_settings_damage">Schaden pro Treffer an anderen (Nur Netzwerk Spiele)</string>
     <string name="player_settings_reload_on_empty">Nachladen wenn Leer ?</string>
     <string name="player_settings_reload_shots">Schüsse pro Nachladen</string>
-    <string name="player_settings_reload_time">NAchlade Zeit (Milisekunden)</string>
+    <string name="player_settings_reload_time">Nachlade Zeit (Milisekunden)</string>
     <string name="player_settings_spawn_time">Widereinstiegs Zeit (Sekunden)</string>
     <string name="player_settings_health_title">Leben</string>
     <string name="player_settings_button">Spieler Einstellungen</string>
@@ -154,4 +154,5 @@
         Drückt den Power Knopf an dem Blaster um Vibration an oder aus zu schalten.\n\n
         Drückt die Taste die sich Hinten am Blaster Befindet um die Feuermodi zu Wechseln\n\n
         Bei Gewehren befindet sich dieser Knopf weiter vorne dort wo man dass Gewehrt greift</string>
+    <string name="vibrate_phone_switch">Vibration</string>
 </resources>

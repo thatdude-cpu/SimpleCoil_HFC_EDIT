@@ -119,6 +119,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopupMenu.O
     private TextView mTeamScoreLabelTV = null;
     private TextView mGameModeTV = null;
     private TextView mGameModeLabelTV = null;
+    private TextView minfo = null;
     private Button mUseNetworkingButton = null;
     private Button mFiringModeButton = null;
     private TextView mEliminationCountTV = null;
@@ -406,6 +407,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopupMenu.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen);
         mFragmentMgr = getSupportFragmentManager();
+        minfo = findViewById(R.id.textview_info);
         mEliminationCountTV = findViewById(R.id.eliminations_count_tv);
         mReconnectButton = findViewById(R.id.reconnect_weapon_button);
         mReconnectButton.setOnClickListener((v -> {

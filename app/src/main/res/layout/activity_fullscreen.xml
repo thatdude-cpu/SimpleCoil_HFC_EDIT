@@ -90,12 +90,29 @@
             android:text="@string/dedicated_server_button" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textview_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/dedicated_server_button"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
             android:text="@string/scrollview_info"
             android:visibility="visible" />
 
+        <!--   //TODO Delete after replaing
+               <WebView
+               android:id="@+id/info_wv"
+               android:visibility="gone"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_alignParentStart="true"
+               android:layout_below="@+id/dedicated_server_button"
+               android:layout_marginTop="16dp" />
+               -->
     </RelativeLayout>
 
     <RelativeLayout
@@ -106,13 +123,13 @@
         android:fitsSystemWindows="true">
 
         <fragment
+            android:id="@+id/map_fragment"
+            android:name="com.simplecoil.simplecoil.MapFragment"
             android:layout_width="fill_parent"
             android:layout_height="400dp"
-            android:name="com.simplecoil.simplecoil.MapFragment"
-            android:id="@+id/map_fragment"
-            android:visibility="visible"
             android:layout_below="@id/health_pb"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:visibility="visible" />
 
         <ImageView
             android:id="@+id/battery_iv"
@@ -369,9 +386,9 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginStart="15dp"
             android:layout_below="@id/health_pb"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="7dp"
             android:text="@string/start_game_button" />
 
         <Button
