@@ -2,7 +2,7 @@
     <string name="app_name">SimpleCoil Edited by Marius</string>
 
     //placeholder strings
-    <string name="integer">%d</string>
+    <string name="integer" translatable="false">%d</string>
     //weapon connect state strings
     <string name="reconnect_weapon_button">Reconnect Same Weapon Only</string>
     <string name="connect_weapon_button">Connect Weapon</string>
@@ -32,9 +32,9 @@
     <string name="shot_mode_single">Single</string>
     <string name="shot_mode_burst3">Burst(3)</string>
     <string name="shot_mode_auto">Auto</string>
-    <string name="recoil_label">RECOIL</string>
-    <string name="recoil_enabled">Enabled</string>
-    <string name="recoil_disabled">Disabled</string>
+    <string name="recoil_label" translatable="false">RECOIL</string>
+    <string name="recoil_enabled">On</string>
+    <string name="recoil_disabled">Off</string>
     <string name="score_label">SCORE</string>
     <string name="team_score_label">TEAM</string>
     <string name="score_limit_label">SCORE (%1$d)</string>
@@ -139,9 +139,9 @@
     <string name="dedicated_game_waiting">Waiting to Start</string>
     <string name="dedicated_allow_join">Allow players to join after game has started?</string>
     <string name="dedicated_server_settings_only">Only allow server settings?</string>
-    <string name="gps_mode_disabled">GPS Disabled</string>
+    <string name="gps_mode_disabled">GPS Off</string>
     <string name="gps_mode_teammate">GPS Teammates Only</string>
-    <string name="gps_mode_all">GPS All Enabled</string>
+    <string name="gps_mode_all">GPS All On</string>
     <string name="player_name_not_connected">{Not Connected}</string>
     <string name="scoreboard_button">Scoreboard</string>
 
