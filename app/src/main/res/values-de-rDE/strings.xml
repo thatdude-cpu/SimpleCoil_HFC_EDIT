@@ -70,7 +70,7 @@
     <string name="no">Nein</string>
     <string name="ok">OK</string>
     <string name="cancel">Abbrechen</string>
-    <string name="server_status_connected_to">"Verbunden mit %1$ "</string>
+    <string name="server_status_connected_to">"Verbunden mit %1$s"</string>
     <string name="server_status_searching">Suche nach Server&#8230;</string>
     <string name="use_network_button">Aktiviere Netzwerk</string>
     <string name="network_menu_button">Netzwerk Optionen</string>
@@ -89,7 +89,7 @@
     <string name="game_mode_2teams">2 Teams</string>
     <string name="game_mode_4teams">4 Teams</string>
     <string name="scan_players_button">Suche nach spielern</string>
-    <string name="scan_started_toast">SPieler Suche gestartet!</string>
+    <string name="scan_started_toast">Spieler Suche gestartet!</string>
     <string name="network_player_1count">1 Spieler</string>
     <string name="network_player_count">%1$d  Spieler</string>
     <string name="not_enough_players_toast">Nicht genug Spieler !</string>
@@ -137,14 +137,21 @@
     <string name="player_settings_reload_time">NAchlade Zeit (Milisekunden)</string>
     <string name="player_settings_spawn_time">Widereinstiegs Zeit (Sekunden)</string>
     <string name="player_settings_health_title">Leben</string>
-    <string name="player_settings_button">Spiler Einstellungen</string>
+    <string name="player_settings_button">Spieler Einstellungen</string>
     <string name="player_settings_team_title">Spieler Einstellungen (%1$d-%2$d</string>
     <string name="player_settings_id_title">Spieler Einstellungen (%1$d)</string>
     <string name="player_settings_title">Spieler Einstellungen</string>
     <string name="player_list_team4_total">Teams Insgesamt:&#8212; Eins:%1$d  Zwei:%2$d  Drei:%3$d  Vier:%4$d</string>
     <string name="player_list_team2_total">Teams insgesamt &#8212; Eins:%1$d  Zwei:%2$d</string>
     <string name="serverip">Bedient auf 999.999.999</string>
-    <string name="server_status_serving_on">Bedient auf %1$</string>
+    <string name="server_status_serving_on">Bedient auf %1$s</string>
     <string name="error_location_permission_required">Erlaubnis erforderlich für Böluetooth Suche</string>
     <string name="app_name">SimpleCoil Editiert von Marius</string>
+    <string name="scrollview_info">Dies ist eine modifizierte Version der Original Simplecoil App.\n\n
+        Diese App ist kostenlos. Diese App kommt ohne Garantie und schadet evtl den Geräten.\n\n
+        Diese App ist für die Nutzung von RECOIL Blastern von Goliath Toys entwickelt wurden.\n\n
+        Es gibt kein Friendly Fire\n\n
+        Drückt den Power Knopf an dem Blaster um Vibration an oder aus zu schalten.\n\n
+        Drückt die Taste die sich Hinten am Blaster Befindet um die Feuermodi zu Wechseln\n\n
+        Bei Gewehren befindet sich dieser Knopf weiter vorne dort wo man dass Gewehrt greift</string>
 </resources>

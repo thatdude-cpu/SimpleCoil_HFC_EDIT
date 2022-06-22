@@ -539,9 +539,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopupMenu.O
         mSpawnInTV = findViewById(R.id.spawn_countdown_tv);
         mHitIV = findViewById(R.id.hit_animation_iv);
         mBatteryLevelIV = findViewById(R.id.battery_iv);
-        WebView wv = findViewById(R.id.info_wv);
-        wv.loadUrl("file:///android_asset/simplecoil.html");
-        wv.setVisibility(View.VISIBLE);
         mGameTimer = findViewById(R.id.game_timer_chronometer);
         mFiringModeButton = findViewById(R.id.firing_mode_button);
         if (mFiringModeButton != null) {
