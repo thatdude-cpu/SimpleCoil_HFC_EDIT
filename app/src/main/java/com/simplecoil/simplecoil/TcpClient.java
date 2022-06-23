@@ -303,6 +303,8 @@ public class TcpClient extends Service {
             playerSettings.put(TcpServer.JSON_SHOT_MODE_BURST3, Globals.getInstance().mAllowBurst3ShotMode);
             playerSettings.put(TcpServer.JSON_SHOT_MODE_AUTO, Globals.getInstance().mAllowAutoShotMode);
             playerSettings.put(TcpServer.JSON_FIRING_MODE, Globals.getInstance().mCurrentFiringMode);
+            playerSettings.put(TcpServer.JSON_PLAYER_PRESET, Globals.getInstance().mCurrentPlayerPreset);
+            playerSettings.put(TcpServer.JSON_WEAPON_PRESET, Globals.getInstance().mCurrentWeaponPreset);
             String message = TcpServer.TCPMESSAGE_PREFIX + TcpServer.TCPPREFIX_JSON + playerSettings.toString();
             sendTCPMessage(message);
         } catch (JSONException e) {
@@ -435,6 +437,10 @@ public class TcpClient extends Service {
                     playerSettings.allowShotModeBurst3 = setting.getBoolean(TcpServer.JSON_SHOT_MODE_BURST3);
                     playerSettings.allowShotModeAuto = setting.getBoolean(TcpServer.JSON_SHOT_MODE_AUTO);
                     playerSettings.firingMode = setting.getInt(TcpServer.JSON_FIRING_MODE);
+                    //TODo checks
+                    playerSettings.playerPreset = setting.getInt(TcpServer.JSON_PLAYER_PRESET);
+                    playerSettings.weaponPreset = setting.getInt(TcpServer.JSON_WEAPON_PRESET);
+
                     if (playerID == Globals.getInstance().mPlayerID) {
                         Globals.getInstance().mFullHealth = playerSettings.health;
                         Globals.getInstance().mFullReload = playerSettings.shots;
@@ -448,6 +454,9 @@ public class TcpClient extends Service {
                         Globals.getInstance().mAllowBurst3ShotMode = playerSettings.allowShotModeBurst3;
                         Globals.getInstance().mAllowAutoShotMode = playerSettings.allowShotModeAuto;
                         Globals.getInstance().mCurrentFiringMode = playerSettings.firingMode;
+                        //TODO checks
+                        Globals.getInstance().mCurrentPlayerPreset = playerSettings.playerPreset;
+                        Globals.getInstance().mCurrentWeaponPreset = playerSettings.weaponPreset;
                     }
                 }
                 Globals.getInstance().mPlayerSettingsSemaphore.release();

@@ -32,23 +32,6 @@
     <string name="score_limit_label">PUNKTE  (%1$d)</string>
     <string name="team_score_limit_label">TEAM  (%1$d)</string>
     <string name="health_label">LEBEN  (%1$d)</string>
-    <string name="weapon_preset_sniper">Scharfschütze</string>
-    <string name="weapon_preset_shotgun">Schrotflinte</string>
-    <string name="weapon_preset_carbine">Karabiner</string>
-    <string name="weapon_preset_lmg">LMG</string>
-    <string name="weapon_preset_pistol">Pistole</string>
-    <string name="weapon_preset_mp">MP</string>
-    <string name="weapon_preset_button">Waffen Voreinstellung</string>
-    <string name="weapon_preset_none">Keine</string>
-    <string name="player_preset_juggernaut">Juggernaut</string>
-    <string name="player_preset_recon">Aufklärer</string>
-    <string name="player_preset_tank">Panzer</string>
-    <string name="player_preset_medic">Sanitäter</string>
-    <string name="player_preset_none">Keine</string>
-    <string name="player_preset_button">Spieler Voreinstellung</string>
-    <string name="firing_mode_outdoor_no_cone">Draußen, kein kegel</string>
-    <string name="firing_mode_outdoor_with_cone">Draußen, Kegel</string>
-    <string name="firing_mode_indoor_no_cone">Innen, kein Kegel</string>
     <string name="firing_mode_cone_toast">Der Kegel ist ein breiter, kurzer IR Impuls der Gegner trifft ohne zu zielen (10m Reichweite)</string>
     <string name="starting_game_label">START !</string>
     <string name="eliminated_label">ELIMINIERT !</string>
@@ -155,4 +138,21 @@
         Drückt die Taste die sich Hinten am Blaster Befindet um die Feuermodi zu Wechseln\n\n
         Bei Gewehren befindet sich dieser Knopf weiter vorne dort wo man dass Gewehrt greift</string>
     <string name="vibrate_phone_switch">Vibration</string>
+    <string name="weapon_preset_sniper">Scharfschützengewehr</string>
+    <string name="weapon_preset_shotgun">Schrotflinte</string>
+    <string name="weapon_preset_carbine">Karabiner</string>
+    <string name="weapon_preset_lmg">LMG</string>
+    <string name="weapon_preset_pistol">Pistole</string>
+    <string name="weapon_preset_mp">MP</string>
+    <string name="weapon_preset_button">Waffen Vorgabe</string>
+    <string name="weapon_preset_none">Keins</string>
+    <string name="player_preset_juggernaut">Juggernaut</string>
+    <string name="player_preset_recon">Aufklärer</string>
+    <string name="player_preset_tank">Panzer</string>
+    <string name="player_preset_medic">Sanitäter</string>
+    <string name="player_preset_none">Keiner</string>
+    <string name="player_preset_button">Spieler Vorgabe</string>
+    <string name="firing_mode_outdoor_no_cone">Draußen</string>
+    <string name="firing_mode_outdoor_with_cone">Draußen, Kegel</string>
+    <string name="firing_mode_indoor_no_cone">Innen</string>
 </resources>

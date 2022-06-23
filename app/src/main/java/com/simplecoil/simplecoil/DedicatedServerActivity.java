@@ -58,7 +58,7 @@ public class DedicatedServerActivity extends AppCompatActivity implements PopupM
     private static final String TAG = "DEDSRV";
 
     private static final String PREF_GPS_MODE = "GPSMode";
-
+//TODO try catch when in no network to avoid crash
     private TextView mServerIPTV = null;
     private Chronometer mGameTimer = null;
     private TextView mGameCountDownTV = null;
@@ -532,7 +532,6 @@ public class DedicatedServerActivity extends AppCompatActivity implements PopupM
         intentFilter.addAction(NetMsg.NETMSG_PLAYERDATAUPDATE);
         return intentFilter;
     }
-//TODO add presets ?
     private void getPlayerDisplayData() {
         if (mTcpServer == null) return;
         Globals.getmTeamPlayerNameSemaphore();

@@ -100,7 +100,12 @@ public class TcpServer extends Service {
     public static final String JSON_SHOT_MODE_BURST3 = "shotmodeburst3";
     public static final String JSON_SHOT_MODE_AUTO = "shotmodeauto";
     public static final String JSON_FIRING_MODE = "firingmode";
+
     public static final String JSON_ALLOWPLAYERSETTINGS = "allowplayersettings";
+
+//TODO PRESET CHECKS
+    public static final String JSON_PLAYER_PRESET = "playerpreset";
+    public static final String JSON_WEAPON_PRESET = "Weaponpreset";
 
     private static volatile boolean keepListening = false;
     private final Semaphore mClientDataSemaphore = new Semaphore(1);
@@ -502,6 +507,10 @@ public class TcpServer extends Service {
                 player.put(JSON_SHOT_MODE_BURST3, entry.getValue().allowShotModeBurst3);
                 player.put(JSON_SHOT_MODE_AUTO, entry.getValue().allowShotModeAuto);
                 player.put(JSON_FIRING_MODE, entry.getValue().firingMode);
+                //TODO checks
+                player.put(JSON_PLAYER_PRESET,entry.getValue().playerPreset);
+                player.put(JSON_WEAPON_PRESET,entry.getValue().weaponPreset);
+
                 players.put(player);
             }
             Globals.getInstance().mPlayerSettingsSemaphore.release();
@@ -922,6 +931,10 @@ public class TcpServer extends Service {
                     settings.allowShotModeBurst3 = player.getBoolean(JSON_SHOT_MODE_BURST3);
                     settings.allowShotModeSingle = player.getBoolean(JSON_SHOT_MODE_SINGLE);
                     settings.firingMode = player.getInt(JSON_FIRING_MODE);
+                    //TODO preset checks
+                    settings.playerPreset = player.getInt(JSON_PLAYER_PRESET);
+                    settings.weaponPreset = player.getInt(JSON_WEAPON_PRESET);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

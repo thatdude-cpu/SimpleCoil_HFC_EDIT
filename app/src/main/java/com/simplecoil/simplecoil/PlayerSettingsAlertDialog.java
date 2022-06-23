@@ -217,7 +217,7 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
         //TODO vibrate switch
         mVibratePhoneSwitch = view.findViewById(R.id.vibrate_phone_switch);
 
-
+        //Change border values
         mApplyAllSwitch = view.findViewById(R.id.apply_to_all_switch);
         setButton(DialogInterface.BUTTON_POSITIVE, mContext.getString(R.string.ok),
                 (dialog, which) -> {
@@ -295,8 +295,37 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                             playerSettings.firingMode = Globals.FIRING_MODE_OUTDOOR_NO_CONE;
                         else if (mFiringModeButton.getText().equals(getContext().getString(R.string.firing_mode_outdoor_with_cone)))
                             playerSettings.firingMode = Globals.FIRING_MODE_OUTDOOR_WITH_CONE;
-                        else
+                        else {
                             playerSettings.firingMode = Globals.FIRING_MODE_INDOOR_NO_CONE;
+                        }//TODO add presets
+                        if(mPlayerPresetButton.getText().equals(getContext().getString(R.string.player_preset_recon)))
+                            playerSettings.playerPreset = Globals.PLAYER_PRESET_RECON;
+                        else if(mPlayerPresetButton.getText().equals(getContext().getString(R.string.player_preset_juggernaut)))
+                            playerSettings.playerPreset = Globals.PLAYER_PRESET_JUGGERNAUT;
+                        else if(mPlayerPresetButton.getText().equals(getContext().getString(R.string.player_preset_tank)))
+                            playerSettings.playerPreset = Globals.PLAYER_PRESET_TANK;
+                        else if(mPlayerPresetButton.getText().equals(getContext().getString(R.string.player_preset_medic)))
+                            playerSettings.playerPreset = Globals.PLAYER_PRESET_MEDIC;
+                        else {
+                            playerSettings.playerPreset = Globals.PLAYER_PRESET_DEFAULT;
+                        }
+                        //WEapon presets
+                        if(mWeaponPresetButton.getText().equals(getContext().getString(R.string.weapon_preset_sniper)))
+                            playerSettings.weaponPreset = Globals.WEAPON_PRESET_SNIPER;
+                        else if(mWeaponPresetButton.getText().equals(getContext().getString(R.string.weapon_preset_shotgun)))
+                            playerSettings.weaponPreset = Globals.WEAPON_PRESET_SHOTGUN;
+                        else if(mWeaponPresetButton.getText().equals(getContext().getString(R.string.weapon_preset_lmg)))
+                            playerSettings.weaponPreset = Globals.WEAPON_PRESET_LMG;
+                        else if(mWeaponPresetButton.getText().equals(getContext().getString(R.string.weapon_preset_mp)))
+                            playerSettings.weaponPreset = Globals.WEAPON_PRESET_MP;
+                        else if(mWeaponPresetButton.getText().equals(getContext().getString(R.string.weapon_preset_carbine)))
+                            playerSettings.weaponPreset = Globals.WEAPON_PRESET_CARBINE;
+                        else if(mWeaponPresetButton.getText().equals(getContext().getString(R.string.weapon_preset_pistol)))
+                            playerSettings.weaponPreset = Globals.WEAPON_PRESET_PISTOL;
+                        else {
+                            playerSettings.weaponPreset = Globals.WEAPON_PRESET_DEFAULT;
+                        }
+
                         Globals.getInstance().mPlayerSettingsSemaphore.release();
                         if (mTcpServer != null) {
                             mTcpServer.sendPlayerSettings(mPlayerID, mApplyAllSwitch.isChecked(), mAllowPlayerSettingsSwitch.isChecked());
@@ -338,6 +367,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
             //TODO preset handling over functions for better and faster changes
             //respawn timer, overwrite lives, lives
             case R.id.player_preset_recon_item:
+                if (!isServer)
+                    Globals.getInstance().mCurrentPlayerPreset = Globals.PLAYER_PRESET_RECON;
                 mPlayerPresetButton.setText(R.string.player_preset_recon);
                 mHealthET.setText("15");
                 //weapon
@@ -350,6 +381,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
             case R.id.player_preset_juggernaut_item:
+                if (!isServer)
+                    Globals.getInstance().mCurrentPlayerPreset = Globals.PLAYER_PRESET_JUGGERNAUT;
                 mPlayerPresetButton.setText(R.string.player_preset_juggernaut);
                 mHealthET.setText("40");
                 //weapon
@@ -362,6 +395,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
             case R.id.player_preset_tank_item:
+                if (!isServer)
+                    Globals.getInstance().mCurrentPlayerPreset = Globals.PLAYER_PRESET_TANK;
                 mPlayerPresetButton.setText(R.string.player_preset_tank);
                 mHealthET.setText("30");
                 //weapon
@@ -374,6 +409,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
             case R.id.player_preset_medic_item:
+                if (!isServer)
+                    Globals.getInstance().mCurrentPlayerPreset = Globals.PLAYER_PRESET_MEDIC;
                 mPlayerPresetButton.setText(R.string.player_preset_medic);
                 mHealthET.setText("20");
                 //weapon
@@ -387,6 +424,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 return true;
                 //weapon preset menu handling
             case R.id.weapon_preset_sniper_item:
+                if (!isServer)
+                    Globals.getInstance().mCurrentWeaponPreset = Globals.WEAPON_PRESET_SNIPER;
                 mWeaponPresetButton.setText(R.string.weapon_preset_sniper);
                 mShotModeAuto.setChecked(false);
                 mShotModeBurst3.setChecked(false);
@@ -397,6 +436,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
             case R.id.weapon_preset_shotgun_item:
+                if (!isServer)
+                    Globals.getInstance().mCurrentWeaponPreset = Globals.WEAPON_PRESET_SHOTGUN;
                 mWeaponPresetButton.setText(R.string.weapon_preset_shotgun);
                 mShotModeAuto.setChecked(false);
                 mShotModeBurst3.setChecked(false);
@@ -407,6 +448,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
             case R.id.weapon_preset_lmg_item:
+                if (!isServer)
+                    Globals.getInstance().mCurrentWeaponPreset = Globals.WEAPON_PRESET_LMG;
                 mWeaponPresetButton.setText(R.string.weapon_preset_lmg);
                 mShotModeAuto.setChecked(false);
                 mShotModeBurst3.setChecked(false);
@@ -417,6 +460,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
             case R.id.weapon_preset_mp_item:
+                if (!isServer)
+                    Globals.getInstance().mCurrentWeaponPreset = Globals.WEAPON_PRESET_MP;
                 mWeaponPresetButton.setText(R.string.weapon_preset_mp);
                 mShotModeAuto.setChecked(true);
                 mShotModeBurst3.setChecked(true);
@@ -427,6 +472,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mReloadOnEmptySwitch.setChecked(true);
                 return true;
             case R.id.weapon_preset_carbine_item:
+                if (!isServer)
+                    Globals.getInstance().mCurrentWeaponPreset = Globals.WEAPON_PRESET_CARBINE;
                 mWeaponPresetButton.setText(R.string.weapon_preset_carbine);
                 mShotModeAuto.setChecked(true);
                 mShotModeBurst3.setChecked(true);
@@ -437,6 +484,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
             case R.id.weapon_preset_pistol_item:
+                if (!isServer)
+                    Globals.getInstance().mCurrentWeaponPreset = Globals.WEAPON_PRESET_PISTOL;
                 mWeaponPresetButton.setText(R.string.weapon_preset_pistol);
                 mShotModeAuto.setChecked(false);
                 mShotModeBurst3.setChecked(false);

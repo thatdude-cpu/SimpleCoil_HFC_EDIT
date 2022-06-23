@@ -47,6 +47,24 @@ public class Globals {
     public volatile int mOverrideLivesVal = 0;
     public volatile boolean mAllowPlayerSettings = true;
     public volatile boolean mReloadOnEmpty = false; // Primarily intended for instagib
+   //TODO checks // add new presets in player settings alert dialog and in the menu list item(frontend)
+    public static final int PLAYER_PRESET_DEFAULT = 0;
+    public static final int PLAYER_PRESET_RECON = 1;
+    public static final int PLAYER_PRESET_JUGGERNAUT = 2;
+    public static final int PLAYER_PRESET_TANK = 3;
+    public static final int PLAYER_PRESET_MEDIC = 4;
+
+    public volatile int mCurrentPlayerPreset = PLAYER_PRESET_DEFAULT;
+
+    public static final int WEAPON_PRESET_DEFAULT = 0;
+    public static final int WEAPON_PRESET_SNIPER = 1;
+    public static final int WEAPON_PRESET_SHOTGUN = 2;
+    public static final int WEAPON_PRESET_LMG = 3;
+    public static final int WEAPON_PRESET_MP = 4;
+    public static final int WEAPON_PRESET_CARBINE = 5;
+    public static final int WEAPON_PRESET_PISTOL = 6;
+
+    public volatile int mCurrentWeaponPreset = WEAPON_PRESET_DEFAULT;
 
     public static final int INVALID_PLAYER_ID = -100;
     public static final int GRENADE_PLAYER_ID = 167;
@@ -308,5 +326,9 @@ public class Globals {
         boolean allowShotModeBurst3 = true;
         boolean allowShotModeAuto = true;
         int firingMode = FIRING_MODE_OUTDOOR_NO_CONE;
+        //TODO checks
+        boolean allowVibratePhone = false;
+        int playerPreset = Globals.PLAYER_PRESET_DEFAULT;   // //presets maybe use int 0 for preset 0 and so on
+        int weaponPreset = Globals.WEAPON_PRESET_DEFAULT;    // needed ?
     }
 }
