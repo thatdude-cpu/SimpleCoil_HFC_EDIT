@@ -372,6 +372,7 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mPlayerPresetButton.setText(R.string.player_preset_recon);
                 mHealthET.setText("15");
                 //weapon
+                mWeaponPresetButton.setText(R.string.weapon_preset_sniper);
                 mShotModeAuto.setChecked(false);
                 mShotModeBurst3.setChecked(false);
                 mShotModeSingle.setChecked(true);
@@ -386,8 +387,10 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mPlayerPresetButton.setText(R.string.player_preset_juggernaut);
                 mHealthET.setText("40");
                 //weapon
-                mShotModeAuto.setChecked(true);
-                mShotModeBurst3.setChecked(true);
+                mWeaponPresetButton.setText(R.string.weapon_preset_lmg);
+                mWeaponPresetButton.setText(R.string.weapon_preset_lmg);
+                mShotModeAuto.setChecked(false);
+                mShotModeBurst3.setChecked(false);
                 mShotModeSingle.setChecked(true);
                 mReloadTimeET.setText("5000");
                 mReloadShotsET.setText("200");
@@ -400,6 +403,7 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mPlayerPresetButton.setText(R.string.player_preset_tank);
                 mHealthET.setText("30");
                 //weapon
+                mWeaponPresetButton.setText(R.string.weapon_preset_shotgun);
                 mShotModeAuto.setChecked(false);
                 mShotModeBurst3.setChecked(false);
                 mShotModeSingle.setChecked(true);
@@ -414,6 +418,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mPlayerPresetButton.setText(R.string.player_preset_medic);
                 mHealthET.setText("20");
                 //weapon
+                mWeaponPresetButton.setText(R.string.weapon_preset_mp);
+                mWeaponPresetButton.setText(R.string.weapon_preset_mp);
                 mShotModeAuto.setChecked(true);
                 mShotModeBurst3.setChecked(true);
                 mShotModeSingle.setChecked(true);
