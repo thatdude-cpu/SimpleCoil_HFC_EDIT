@@ -1821,6 +1821,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopupMenu.O
                 mBlasterType = intent.getByteExtra(BluetoothLeService.EXTRA_DATA, BLASTER_TYPE_PISTOL);
                 if (mBlasterType == BLASTER_TYPE_RIFLE) {
                     Toast.makeText(getApplicationContext(), getString(R.string.rifle_detected_toast, mDeviceAddress), Toast.LENGTH_LONG).show();
+
                 } else {
                     // We'll automatically assume that this is a pistol
                     Toast.makeText(getApplicationContext(), getString(R.string.pistol_detected_toast, mDeviceAddress), Toast.LENGTH_LONG).show();

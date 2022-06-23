@@ -59,6 +59,7 @@ public class DedicatedServerActivity extends AppCompatActivity implements PopupM
 
     private static final String PREF_GPS_MODE = "GPSMode";
 //TODO try catch when in no network to avoid crash
+    //TODO TTT GAME MODE
     private TextView mServerIPTV = null;
     private Chronometer mGameTimer = null;
     private TextView mGameCountDownTV = null;
