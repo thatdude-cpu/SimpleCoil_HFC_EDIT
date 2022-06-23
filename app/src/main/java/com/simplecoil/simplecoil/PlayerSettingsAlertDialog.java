@@ -364,6 +364,7 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mFiringModeButton.setText(R.string.firing_mode_indoor_no_cone);
                 return true;
                 //TODO player preset menu handling
+            //TODO adding strings for each weapon for reload time ,reload shots,and damage
             //TODO preset handling over functions for better and faster changes
             //respawn timer, overwrite lives, lives
             case R.id.player_preset_recon_item:
@@ -393,7 +394,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mShotModeBurst3.setChecked(false);
                 mShotModeSingle.setChecked(true);
                 mReloadTimeET.setText("5000");
-                mReloadShotsET.setText("200");
+                //max value due to shots being byte
+                mReloadShotsET.setText("127");
                 mDamageET.setText("1");
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
@@ -461,7 +463,7 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mShotModeBurst3.setChecked(false);
                 mShotModeSingle.setChecked(true);
                 mReloadTimeET.setText("5000");
-                mReloadShotsET.setText("200");
+                mReloadShotsET.setText("127");
                 mDamageET.setText("1");
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
