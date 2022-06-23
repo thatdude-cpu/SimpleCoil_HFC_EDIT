@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/weapon_preset_sniper_item"
+        android:title="@string/weapon_preset_sniper" />
+    <item
+        android:id="@+id/weapon_preset_shotgun_item"
+        android:title="@string/weapon_preset_shotgun" />
+    <item
+        android:id="@+id/weapon_preset_pistol_item"
+        android:title="@string/weapon_preset_pistol" />
+    <item
+        android:id="@+id/weapon_preset_lmg_item"
+        android:title="@string/weapon_preset_lmg" />
+    <item
+        android:id="@+id/weapon_preset_carbine_item"
+        android:title="@string/weapon_preset_carbine" />
+    <item
+        android:id="@+id/weapon_preset_mp_item"
+        android:title="@string/weapon_preset_mp" />
+</menu>

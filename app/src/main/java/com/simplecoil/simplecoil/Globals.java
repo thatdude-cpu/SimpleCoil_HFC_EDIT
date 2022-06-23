@@ -16,6 +16,8 @@
 
 package com.simplecoil.simplecoil;
 
+import static java.lang.Boolean.FALSE;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;
@@ -45,6 +47,24 @@ public class Globals {
     public volatile int mOverrideLivesVal = 0;
     public volatile boolean mAllowPlayerSettings = true;
     public volatile boolean mReloadOnEmpty = false; // Primarily intended for instagib
+   //TODO checks // add new presets in player settings alert dialog and in the menu list item(frontend)
+    public static final int PLAYER_PRESET_DEFAULT = 0;
+    public static final int PLAYER_PRESET_RECON = 1;
+    public static final int PLAYER_PRESET_JUGGERNAUT = 2;
+    public static final int PLAYER_PRESET_TANK = 3;
+    public static final int PLAYER_PRESET_MEDIC = 4;
+
+    public volatile int mCurrentPlayerPreset = PLAYER_PRESET_DEFAULT;
+
+    public static final int WEAPON_PRESET_DEFAULT = 0;
+    public static final int WEAPON_PRESET_SNIPER = 1;
+    public static final int WEAPON_PRESET_SHOTGUN = 2;
+    public static final int WEAPON_PRESET_LMG = 3;
+    public static final int WEAPON_PRESET_MP = 4;
+    public static final int WEAPON_PRESET_CARBINE = 5;
+    public static final int WEAPON_PRESET_PISTOL = 6;
+
+    public volatile int mCurrentWeaponPreset = WEAPON_PRESET_DEFAULT;
 
     public static final int INVALID_PLAYER_ID = -100;
     public static final int GRENADE_PLAYER_ID = 167;
@@ -60,6 +80,8 @@ public class Globals {
     public static final int GAME_LIMIT_LIVES = 2;
     public static final int GAME_LIMIT_SCORE = 4;
     public volatile int mGameLimit = GAME_LIMIT_NONE;
+    //mUnlimited Switch in game limit if true it is a unlimited game
+    public volatile boolean mUnlimited = FALSE;
     public volatile int mTimeLimit = 0;
     public volatile int mScoreLimit = 0;
     public volatile int mLivesLimit = 0;
@@ -116,10 +138,10 @@ public class Globals {
     public static synchronized Globals getInstance(){
         if(mInstance == null){
             mInstance = new Globals();
-            mInstance.mIPTeamMap = new HashMap<InetAddress, Byte>();
-            mInstance.mTeamIPMap = new HashMap<Byte, InetAddress>();
-            mInstance.mTeamPlayerNameMap = new HashMap<Byte, String>();
-            mInstance.mPlayerSettings = new HashMap<Byte, PlayerSettings>();
+            mInstance.mIPTeamMap = new HashMap<>();
+            mInstance.mTeamIPMap = new HashMap<>();
+            mInstance.mTeamPlayerNameMap = new HashMap<>();
+            mInstance.mPlayerSettings = new HashMap<>();
 
             mInstance.mIPTeamMapSemaphore = new Semaphore(1);
             mInstance.mTeamIPMapSemaphore = new Semaphore(1);
@@ -304,5 +326,9 @@ public class Globals {
         boolean allowShotModeBurst3 = true;
         boolean allowShotModeAuto = true;
         int firingMode = FIRING_MODE_OUTDOOR_NO_CONE;
+        //TODO checks
+        boolean allowVibratePhone = false;
+        int playerPreset = Globals.PLAYER_PRESET_DEFAULT;   // //presets maybe use int 0 for preset 0 and so on
+        int weaponPreset = Globals.WEAPON_PRESET_DEFAULT;    // needed ?
     }
 }

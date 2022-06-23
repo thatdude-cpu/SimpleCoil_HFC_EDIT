@@ -17,6 +17,7 @@
 package com.simplecoil.simplecoil;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +27,9 @@ import android.widget.TextView;
 
 public class PlayerDisplayDataListAdapter extends ArrayAdapter<PlayerDisplayData> {
     private final Activity context;
-    private PlayerDisplayData[] data = new PlayerDisplayData[Globals.MAX_PLAYER_ID];
-    private boolean isClient;
+    private PlayerDisplayData[] data;
+    private final boolean isClient;
+
 
     public PlayerDisplayDataListAdapter(Activity context,
                                         PlayerDisplayData[] data, boolean isClient) {
@@ -40,9 +42,10 @@ public class PlayerDisplayDataListAdapter extends ArrayAdapter<PlayerDisplayData
     public void setData(PlayerDisplayData[] data) {
         this.data = data;
     }
-
+    //TODO add player and weapon presetto display
     @Override
     public View getView(int position, View view, ViewGroup parent) {
+        Resources res = context.getResources();
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView;
         if (isClient)
@@ -69,7 +72,7 @@ public class PlayerDisplayDataListAdapter extends ArrayAdapter<PlayerDisplayData
         }
         switch (Globals.getInstance().mGameMode) {
             case Globals.GAME_MODE_FFA:
-                playerIDTV.setText("" + position);
+                playerIDTV.setText(res.getString(R.string.player_list_position,position));
                 break;
             case Globals.GAME_MODE_2TEAMS:
                 if (position > Globals.MAX_PLAYER_ID / 2)

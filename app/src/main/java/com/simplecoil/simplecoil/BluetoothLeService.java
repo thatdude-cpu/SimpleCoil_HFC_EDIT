@@ -34,6 +34,7 @@ import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.UUID;
 
@@ -125,17 +126,17 @@ public class BluetoothLeService extends Service {
             }
             if (mCharacteristicWriteQueue.size() > 0) {
                 if (!mBluetoothGatt.writeCharacteristic(mCharacteristicWriteQueue.peek())) {
-                    Log.e(TAG, "Failed to write queued characteristic " + mCharacteristicWriteQueue.peek().getUuid().toString());
+                    Log.e(TAG, "Failed to write queued characteristic " + Objects.requireNonNull(mCharacteristicWriteQueue.peek()).getUuid().toString());
                 }
                 mCharacteristicWriteQueue.remove();
             } else if (mDescriptorWriteQueue.size() > 0) {
                 if (!mBluetoothGatt.writeDescriptor(mDescriptorWriteQueue.peek())) {
-                    Log.e(TAG, "Failed to write queued descriptor " + mDescriptorWriteQueue.peek().getUuid().toString());
+                    Log.e(TAG, "Failed to write queued descriptor " + Objects.requireNonNull(mDescriptorWriteQueue.peek()).getUuid().toString());
                 }
                 mDescriptorWriteQueue.remove();
             } else if (mCharacteristicReadQueue.size() > 0) {
                 if (!mBluetoothGatt.readCharacteristic(mCharacteristicReadQueue.peek())) {
-                    Log.e(TAG, "Failed to read queued characteristic " + mCharacteristicReadQueue.peek().getUuid().toString());
+                    Log.e(TAG, "Failed to read queued characteristic " + Objects.requireNonNull(mCharacteristicReadQueue.peek()).getUuid().toString());
                 }
                 mCharacteristicReadQueue.remove();
             } else {
@@ -154,17 +155,17 @@ public class BluetoothLeService extends Service {
             }
             if (mCharacteristicWriteQueue.size() > 0) {
                 if (!mBluetoothGatt.writeCharacteristic(mCharacteristicWriteQueue.peek())) {
-                    Log.e(TAG, "Failed to write queued characteristic " + mCharacteristicWriteQueue.peek().getUuid().toString());
+                    Log.e(TAG, "Failed to write queued characteristic " + Objects.requireNonNull(mCharacteristicWriteQueue.peek()).getUuid().toString());
                 }
                 mCharacteristicWriteQueue.remove();
             } else if (mDescriptorWriteQueue.size() > 0) {
                 if (!mBluetoothGatt.writeDescriptor(mDescriptorWriteQueue.peek())) {
-                    Log.e(TAG, "Failed to write queued descriptor " + mDescriptorWriteQueue.peek().getUuid().toString());
+                    Log.e(TAG, "Failed to write queued descriptor " + Objects.requireNonNull(mDescriptorWriteQueue.peek()).getUuid().toString());
                 }
                 mDescriptorWriteQueue.remove();
             } else if (mCharacteristicReadQueue.size() > 0) {
                 if (!mBluetoothGatt.readCharacteristic(mCharacteristicReadQueue.peek())) {
-                    Log.e(TAG, "Failed to read queued characteristic " + mCharacteristicReadQueue.peek().getUuid().toString());
+                    Log.e(TAG, "Failed to read queued characteristic " + Objects.requireNonNull(mCharacteristicReadQueue.peek()).getUuid().toString());
                 }
                 mCharacteristicReadQueue.remove();
             } else {
@@ -190,17 +191,17 @@ public class BluetoothLeService extends Service {
             }
             if (mCharacteristicWriteQueue.size() > 0) {
                 if (!mBluetoothGatt.writeCharacteristic(mCharacteristicWriteQueue.peek())) {
-                    Log.e(TAG, "Failed to write queued characteristic " + mCharacteristicWriteQueue.peek().getUuid().toString());
+                    Log.e(TAG, "Failed to write queued characteristic " + Objects.requireNonNull(mCharacteristicWriteQueue.peek()).getUuid().toString());
                 }
                 mCharacteristicWriteQueue.remove();
             } else if (mDescriptorWriteQueue.size() > 0) {
                 if (!mBluetoothGatt.writeDescriptor(mDescriptorWriteQueue.peek())) {
-                    Log.e(TAG, "Failed to write queued descriptor " + mDescriptorWriteQueue.peek().getUuid().toString());
+                    Log.e(TAG, "Failed to write queued descriptor " + Objects.requireNonNull(mDescriptorWriteQueue.peek()).getUuid().toString());
                 }
                 mDescriptorWriteQueue.remove();
             } else if (mCharacteristicReadQueue.size() > 0) {
                 if (!mBluetoothGatt.readCharacteristic(mCharacteristicReadQueue.peek())) {
-                    Log.e(TAG, "Failed to read queued characteristic " + mCharacteristicReadQueue.peek().getUuid().toString());
+                    Log.e(TAG, "Failed to read queued characteristic " + Objects.requireNonNull(mCharacteristicReadQueue.peek()).getUuid().toString());
                 }
                 mCharacteristicReadQueue.remove();
             } else {
@@ -300,7 +301,7 @@ public class BluetoothLeService extends Service {
         }
 
         // Previously connected device.  Try to reconnect.
-        if (mBluetoothDeviceAddress != null && address.equals(mBluetoothDeviceAddress)
+        if (address.equals(mBluetoothDeviceAddress)
                 && mBluetoothGatt != null) {
             Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
             if (mBluetoothGatt.connect()) {

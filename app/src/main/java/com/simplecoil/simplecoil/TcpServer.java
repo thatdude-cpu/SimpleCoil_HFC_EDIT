@@ -31,7 +31,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -40,10 +39,9 @@ import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
-
-import javax.microedition.khronos.opengles.GL;
 
 public class TcpServer extends Service {
     private static final String TAG = "TCPServer";
@@ -102,10 +100,15 @@ public class TcpServer extends Service {
     public static final String JSON_SHOT_MODE_BURST3 = "shotmodeburst3";
     public static final String JSON_SHOT_MODE_AUTO = "shotmodeauto";
     public static final String JSON_FIRING_MODE = "firingmode";
+
     public static final String JSON_ALLOWPLAYERSETTINGS = "allowplayersettings";
 
+//TODO PRESET CHECKS
+    public static final String JSON_PLAYER_PRESET = "playerpreset";
+    public static final String JSON_WEAPON_PRESET = "Weaponpreset";
+
     private static volatile boolean keepListening = false;
-    private Semaphore mClientDataSemaphore = new Semaphore(1);
+    private final Semaphore mClientDataSemaphore = new Semaphore(1);
     private volatile Map<Integer, ClientData> mClientData = null;
     private static boolean mIsDedicated = false;
     private static volatile boolean mGPSRunning = false;
@@ -141,18 +144,16 @@ public class TcpServer extends Service {
     public void sendTCPMessageAll(final String message, final boolean queueMessage) {
         if (mClientData == null || mClientData.size() == 0)
             return;
-        Thread sendThread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    mClientDataSemaphore.acquire();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
-                    entry.getValue().sendTCPMessage(message, queueMessage);
-                }
-                mClientDataSemaphore.release();
+        Thread sendThread = new Thread(() -> {
+            try {
+                mClientDataSemaphore.acquire();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
+                entry.getValue().sendTCPMessage(message, queueMessage);
+            }
+            mClientDataSemaphore.release();
         });
         sendThread.start();
     }
@@ -164,23 +165,21 @@ public class TcpServer extends Service {
     private void sendTCPMessageID(final String message, final byte playerID, final boolean waitForAccess, final boolean queueMessage) {
         if (mClientData == null || mClientData.size() == 0)
             return;
-        Thread sendThread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    if (waitForAccess)
-                        mClientDataSemaphore.acquire();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
-                    if (entry.getValue().mPlayerID == playerID) {
-                        entry.getValue().sendTCPMessage(message, queueMessage);
-                        break;
-                    }
-                }
+        Thread sendThread = new Thread(() -> {
+            try {
                 if (waitForAccess)
-                    mClientDataSemaphore.release();
+                    mClientDataSemaphore.acquire();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
+                if (entry.getValue().mPlayerID == playerID) {
+                    entry.getValue().sendTCPMessage(message, queueMessage);
+                    break;
+                }
+            }
+            if (waitForAccess)
+                mClientDataSemaphore.release();
         });
         sendThread.start();
     }
@@ -192,33 +191,31 @@ public class TcpServer extends Service {
     private void sendTCPMessageTeam(final String message, final byte playerID, final boolean includePlayer, final boolean waitForAccess, final boolean queueMessage) {
         if (mClientData == null || mClientData.size() == 0)
             return;
-        Thread sendThread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    if (waitForAccess)
-                        mClientDataSemaphore.acquire();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                int team = -1;
-                for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
-                    if (entry.getValue().mPlayerID == playerID) {
-                        team = entry.getValue().mNetworkTeam;
-                        if (includePlayer)
-                            entry.getValue().sendTCPMessage(message, queueMessage);
-                        break;
-                    }
-                }
-                if (team != -1) {
-                    Log.e(TAG, "team is " + team);
-                    for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
-                        if (entry.getValue().mNetworkTeam == team && entry.getValue().mPlayerID != playerID)
-                            entry.getValue().sendTCPMessage(message, queueMessage);
-                    }
-                }
+        Thread sendThread = new Thread(() -> {
+            try {
                 if (waitForAccess)
-                    mClientDataSemaphore.release();
+                    mClientDataSemaphore.acquire();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            int team = -1;
+            for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
+                if (entry.getValue().mPlayerID == playerID) {
+                    team = entry.getValue().mNetworkTeam;
+                    if (includePlayer)
+                        entry.getValue().sendTCPMessage(message, queueMessage);
+                    break;
+                }
+            }
+            if (team != -1) {
+                Log.e(TAG, "team is " + team);
+                for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
+                    if (entry.getValue().mNetworkTeam == team && entry.getValue().mPlayerID != playerID)
+                        entry.getValue().sendTCPMessage(message, queueMessage);
+                }
+            }
+            if (waitForAccess)
+                mClientDataSemaphore.release();
         });
         sendThread.start();
     }
@@ -226,23 +223,21 @@ public class TcpServer extends Service {
     public void startGame() {
         if (mClientData == null || mClientData.size() == 0)
             return;
-        Thread sendThread = new Thread(new Runnable() {
-            public void run() {
-                // we want to make sure that we have sent the start game message to all clients before broadcasting that the game has started locally
-                String message = TCPMESSAGE_PREFIX + TCPPREFIX_MESG + NetMsg.NETMSG_STARTGAME;
-                try {
-                    mClientDataSemaphore.acquire();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
-                    entry.getValue().sendTCPMessage(message);
-                }
-                mClientDataSemaphore.release();
-                sendBroadcast(new Intent(NetMsg.NETMSG_STARTGAME));
-                if (!mIsDedicated)
-                    keepListening = false;
+        Thread sendThread = new Thread(() -> {
+            // we want to make sure that we have sent the start game message to all clients before broadcasting that the game has started locally
+            String message = TCPMESSAGE_PREFIX + TCPPREFIX_MESG + NetMsg.NETMSG_STARTGAME;
+            try {
+                mClientDataSemaphore.acquire();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
+                entry.getValue().sendTCPMessage(message);
+            }
+            mClientDataSemaphore.release();
+            sendBroadcast(new Intent(NetMsg.NETMSG_STARTGAME));
+            if (!mIsDedicated)
+                keepListening = false;
         });
         sendThread.start();
     }
@@ -250,37 +245,35 @@ public class TcpServer extends Service {
     public void endGame() {
         if (mClientData == null || mClientData.size() == 0)
             return;
-        Thread sendThread = new Thread(new Runnable() {
-            public void run() {
-                sendPlayerData(SEND_ALL);
-                // we want to make sure that we have sent the end game message to all clients before removing all clients
-                String message = TCPMESSAGE_PREFIX + TCPPREFIX_MESG + NetMsg.NETMSG_ENDGAME;
-                try {
-                    mClientDataSemaphore.acquire();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
-                    entry.getValue().sendTCPMessage(message);
-                    entry.getValue().close();
-                }
-                mClientData.clear();
-                mClientDataSemaphore.release();
-                Globals.getmGPSDataSemaphore();
-                Globals.getInstance().mGPSData.clear();
-                Globals.getInstance().mGPSDataSemaphore.release();
-                Globals.getmTeamPlayerNameSemaphore();
-                Globals.getInstance().mTeamPlayerNameMap.clear();
-                Globals.getInstance().mTeamPlayerNameSemaphore.release();
-                Globals.getmTeamIPMapSemaphore();
-                Globals.getInstance().mTeamIPMap.clear();
-                Globals.getInstance().mTeamIPMapSemaphore.release();
-                Globals.getmIPTeamMapSemaphore();
-                Globals.getInstance().mIPTeamMap.clear();
-                Globals.getInstance().mIPTeamMapSemaphore.release();
-                Globals.getInstance().mPairedGrenadeID = Globals.INVALID_PLAYER_ID;
-                sendBroadcast(new Intent(NetMsg.NETMSG_ENDGAME));
+        Thread sendThread = new Thread(() -> {
+            sendPlayerData(SEND_ALL);
+            // we want to make sure that we have sent the end game message to all clients before removing all clients
+            String message = TCPMESSAGE_PREFIX + TCPPREFIX_MESG + NetMsg.NETMSG_ENDGAME;
+            try {
+                mClientDataSemaphore.acquire();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
+                entry.getValue().sendTCPMessage(message);
+                entry.getValue().close();
+            }
+            mClientData.clear();
+            mClientDataSemaphore.release();
+            Globals.getmGPSDataSemaphore();
+            Globals.getInstance().mGPSData.clear();
+            Globals.getInstance().mGPSDataSemaphore.release();
+            Globals.getmTeamPlayerNameSemaphore();
+            Globals.getInstance().mTeamPlayerNameMap.clear();
+            Globals.getInstance().mTeamPlayerNameSemaphore.release();
+            Globals.getmTeamIPMapSemaphore();
+            Globals.getInstance().mTeamIPMap.clear();
+            Globals.getInstance().mTeamIPMapSemaphore.release();
+            Globals.getmIPTeamMapSemaphore();
+            Globals.getInstance().mIPTeamMap.clear();
+            Globals.getInstance().mIPTeamMapSemaphore.release();
+            Globals.getInstance().mPairedGrenadeID = Globals.INVALID_PLAYER_ID;
+            sendBroadcast(new Intent(NetMsg.NETMSG_ENDGAME));
         });
         sendThread.start();
     }
@@ -358,21 +351,19 @@ public class TcpServer extends Service {
                 game.put(JSON_PLAYERGAMEUPDATE, playerGameUpdate);
                 final String idMessage = TCPMESSAGE_PREFIX + TCPPREFIX_JSON + game.toString();
 
-                Thread sendThread = new Thread(new Runnable() {
-                    public void run() {
-                        try {
-                            mClientDataSemaphore.acquire();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
-                            if (entry.getValue().mPlayerID != id)
-                                entry.getValue().sendTCPMessage(allMessage, false);
-                            else
-                                entry.getValue().sendTCPMessage(idMessage, false);
-                        }
-                        mClientDataSemaphore.release();
+                Thread sendThread = new Thread(() -> {
+                    try {
+                        mClientDataSemaphore.acquire();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
+                    for (Map.Entry<Integer, ClientData> entry : mClientData.entrySet()) {
+                        if (entry.getValue().mPlayerID != id)
+                            entry.getValue().sendTCPMessage(allMessage, false);
+                        else
+                            entry.getValue().sendTCPMessage(idMessage, false);
+                    }
+                    mClientDataSemaphore.release();
                 });
                 sendThread.start();
             }
@@ -468,7 +459,7 @@ public class TcpServer extends Service {
             e.printStackTrace();
         }
     }
-
+//TODO player presets
     public JSONArray getPlayerSettings(int playerID, boolean applyAll) {
         boolean hasSemaphore = false;
         try {
@@ -483,16 +474,16 @@ public class TcpServer extends Service {
                             playerSettings = new Globals.PlayerSettings();
                             Globals.getInstance().mPlayerSettings.put(x, playerSettings);
                         }
-                        playerSettings.health = Globals.getInstance().mPlayerSettings.get((byte)playerID).health;
-                        playerSettings.shots = Globals.getInstance().mPlayerSettings.get((byte)playerID).shots;
-                        playerSettings.reloadTime = Globals.getInstance().mPlayerSettings.get((byte)playerID).reloadTime;
-                        playerSettings.spawnTime = Globals.getInstance().mPlayerSettings.get((byte)playerID).spawnTime;
-                        playerSettings.damage = Globals.getInstance().mPlayerSettings.get((byte)playerID).damage;
-                        playerSettings.overrideLives = Globals.getInstance().mPlayerSettings.get((byte)playerID).overrideLives;
-                        playerSettings.lives = Globals.getInstance().mPlayerSettings.get((byte)playerID).lives;
-                        playerSettings.allowShotModeSingle = Globals.getInstance().mPlayerSettings.get((byte)playerID).allowShotModeSingle;
-                        playerSettings.allowShotModeBurst3 = Globals.getInstance().mPlayerSettings.get((byte)playerID).allowShotModeBurst3;
-                        playerSettings.allowShotModeAuto = Globals.getInstance().mPlayerSettings.get((byte)playerID).allowShotModeAuto;
+                        playerSettings.health = Objects.requireNonNull(Globals.getInstance().mPlayerSettings.get((byte) playerID)).health;
+                        playerSettings.shots = Objects.requireNonNull(Globals.getInstance().mPlayerSettings.get((byte) playerID)).shots;
+                        playerSettings.reloadTime = Objects.requireNonNull(Globals.getInstance().mPlayerSettings.get((byte) playerID)).reloadTime;
+                        playerSettings.spawnTime = Objects.requireNonNull(Globals.getInstance().mPlayerSettings.get((byte) playerID)).spawnTime;
+                        playerSettings.damage = Objects.requireNonNull(Globals.getInstance().mPlayerSettings.get((byte) playerID)).damage;
+                        playerSettings.overrideLives = Objects.requireNonNull(Globals.getInstance().mPlayerSettings.get((byte) playerID)).overrideLives;
+                        playerSettings.lives = Objects.requireNonNull(Globals.getInstance().mPlayerSettings.get((byte) playerID)).lives;
+                        playerSettings.allowShotModeSingle = Objects.requireNonNull(Globals.getInstance().mPlayerSettings.get((byte) playerID)).allowShotModeSingle;
+                        playerSettings.allowShotModeBurst3 = Objects.requireNonNull(Globals.getInstance().mPlayerSettings.get((byte) playerID)).allowShotModeBurst3;
+                        playerSettings.allowShotModeAuto = Objects.requireNonNull(Globals.getInstance().mPlayerSettings.get((byte) playerID)).allowShotModeAuto;
                     }
                 }
             }
@@ -516,6 +507,10 @@ public class TcpServer extends Service {
                 player.put(JSON_SHOT_MODE_BURST3, entry.getValue().allowShotModeBurst3);
                 player.put(JSON_SHOT_MODE_AUTO, entry.getValue().allowShotModeAuto);
                 player.put(JSON_FIRING_MODE, entry.getValue().firingMode);
+                //TODO checks
+                player.put(JSON_PLAYER_PRESET,entry.getValue().playerPreset);
+                player.put(JSON_WEAPON_PRESET,entry.getValue().weaponPreset);
+
                 players.put(player);
             }
             Globals.getInstance().mPlayerSettingsSemaphore.release();
@@ -550,11 +545,7 @@ public class TcpServer extends Service {
             Log.d(TAG, "Server already listening");
             return;
         }
-        new Thread(new Runnable() {
-            public void run() {
-                runTcpServer();
-            }
-        }).start();
+        new Thread(this::runTcpServer).start();
     }
 
     private void runTcpServer() {
@@ -598,10 +589,8 @@ public class TcpServer extends Service {
             }
             if (s != null)
                 s.close();
-        } catch (InterruptedIOException e) {
-            //if timeout occurs
-            e.printStackTrace();
         } catch (IOException e) {
+            //if timeout occurs
             e.printStackTrace();
         } finally {
             if (ss != null) {
@@ -642,9 +631,9 @@ public class TcpServer extends Service {
         if (clientID < 0)
             return null;
         ScoreData scoreData = new ScoreData();
-        scoreData.points = mClientData.get(clientID).points;
-        scoreData.eliminated = mClientData.get(clientID).eliminated;
-        scoreData.isConnected = mClientData.get(clientID).out != null;
+        scoreData.points = Objects.requireNonNull(mClientData.get(clientID)).points;
+        scoreData.eliminated = Objects.requireNonNull(mClientData.get(clientID)).eliminated;
+        scoreData.isConnected = Objects.requireNonNull(mClientData.get(clientID)).out != null;
         return scoreData;
     }
 
@@ -756,12 +745,12 @@ public class TcpServer extends Service {
                             if (!message.equals(TcpClient.TCP_CLIENT_PONG)) {
                                 Log.i(TAG, "received: '" + message + "' from " + entry.getValue().clientID);
                                 if (message.startsWith(TCPMESSAGE_PREFIX)) {
-                                    if (message.substring(TCPMESSAGE_PREFIX.length(), TCPMESSAGE_PREFIX.length() + TCPPREFIX_JSON.length()).equals(TCPPREFIX_JSON)) {
+                                    if (message.startsWith(TCPPREFIX_JSON, TCPMESSAGE_PREFIX.length())) {
                                         // Handle JSON Data
                                         message = message.substring(TCPMESSAGE_PREFIX.length() + TCPPREFIX_JSON.length());
                                         parsePlayerInfo(message, entry.getValue());
                                         break;
-                                    } else if (message.substring(TCPMESSAGE_PREFIX.length(), TCPMESSAGE_PREFIX.length() + TCPPREFIX_MESG.length()).equals(TCPPREFIX_MESG)) {
+                                    } else if (message.startsWith(TCPPREFIX_MESG, TCPMESSAGE_PREFIX.length())) {
                                         // Handle messages
                                         message = message.substring(TCPMESSAGE_PREFIX.length() + TCPPREFIX_MESG.length());
                                         if (message.equals(NetMsg.NETMSG_LEAVE)) {
@@ -773,14 +762,14 @@ public class TcpServer extends Service {
                                             // A player was eliminated
                                             entry.getValue().eliminated++;
                                             message = message.substring(NetMsg.NETMSG_ELIMINATED.length());
-                                            Byte id = (byte) (int) Integer.parseInt(message);
+                                            Byte id = (byte) Integer.parseInt(message);
                                             int clientID = clientIDFromPlayerID(id);
                                             if (clientID >= 0)
-                                                mClientData.get(clientID).points++;
+                                                Objects.requireNonNull(mClientData.get(clientID)).points++;
                                             sendTCPMessageID(TCPMESSAGE_PREFIX + TCPPREFIX_MESG + NetMsg.NETMSG_ELIMINATED + entry.getValue().mPlayerID, id, false, true);
                                             if (Globals.getInstance().mGameMode != Globals.GAME_MODE_FFA) {
                                                 // Send a message to all teammates about the score increase
-                                                sendTCPMessageTeam(TCPMESSAGE_PREFIX + TCPPREFIX_MESG + NetMsg.NETMSG_TEAMELIMINATED, (byte) id, false, false, true);
+                                                sendTCPMessageTeam(TCPMESSAGE_PREFIX + TCPPREFIX_MESG + NetMsg.NETMSG_TEAMELIMINATED, id, false, false, true);
                                             }
                                             sendBroadcast(new Intent(NetMsg.NETMSG_PLAYERDATAUPDATE));
                                         } else if (message.equals(NetMsg.NETMSG_PLAYERDATAREQUEST)) {
@@ -942,6 +931,10 @@ public class TcpServer extends Service {
                     settings.allowShotModeBurst3 = player.getBoolean(JSON_SHOT_MODE_BURST3);
                     settings.allowShotModeSingle = player.getBoolean(JSON_SHOT_MODE_SINGLE);
                     settings.firingMode = player.getInt(JSON_FIRING_MODE);
+                    //TODO preset checks
+                    settings.playerPreset = player.getInt(JSON_PLAYER_PRESET);
+                    settings.weaponPreset = player.getInt(JSON_WEAPON_PRESET);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

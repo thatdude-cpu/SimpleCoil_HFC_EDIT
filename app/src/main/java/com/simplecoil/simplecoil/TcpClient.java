@@ -42,6 +42,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Queue;
 
 public class TcpClient extends Service {
@@ -101,20 +102,18 @@ public class TcpClient extends Service {
             }
             return;
         }
-        Thread sendThread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    out.writeUTF(message);
-                    out.flush();
-                    if (!message.equals(TCP_CLIENT_PONG))
-                        Log.i(TAG, "sent: " + message);
-                } catch (IOException e) {
-                    //Log.e(TAG, "IO Error:", e);
-                    e.printStackTrace();
-                    if (queueMessage) {
-                        Log.e(TAG, "queuing: " + message);
-                        messageQueue.add(message);
-                    }
+        Thread sendThread = new Thread(() -> {
+            try {
+                out.writeUTF(message);
+                out.flush();
+                if (!message.equals(TCP_CLIENT_PONG))
+                    Log.i(TAG, "sent: " + message);
+            } catch (IOException e) {
+                //Log.e(TAG, "IO Error:", e);
+                e.printStackTrace();
+                if (queueMessage) {
+                    Log.e(TAG, "queuing: " + message);
+                    messageQueue.add(message);
                 }
             }
         });
@@ -130,11 +129,7 @@ public class TcpClient extends Service {
             Log.e(TAG, "Please wait for client to stop listening");
             return;
         }
-        new Thread(new Runnable() {
-            public void run() {
-                runTcpClient();
-            }
-        }).start();
+        new Thread(this::runTcpClient).start();
     }
 
     private void runTcpClient() {
@@ -186,14 +181,14 @@ public class TcpClient extends Service {
                             sendTCPMessage(TCP_CLIENT_PONG);
                         else {
                             Log.i(TAG, "received: '" + message + "'");
-                            if (message.substring(TcpServer.TCPMESSAGE_PREFIX.length(), TcpServer.TCPMESSAGE_PREFIX.length() + TcpServer.TCPPREFIX_JSON.length()).equals(TcpServer.TCPPREFIX_JSON)) {
+                            if (message.startsWith(TcpServer.TCPPREFIX_JSON, TcpServer.TCPMESSAGE_PREFIX.length())) {
                                 message = message.substring(TcpServer.TCPMESSAGE_PREFIX.length() + TcpServer.TCPPREFIX_JSON.length());
                                 parseGameInfo(message);
-                            } else if (message.substring(TcpServer.TCPMESSAGE_PREFIX.length(), TcpServer.TCPMESSAGE_PREFIX.length() + TcpServer.TCPPREFIX_MESG.length()).equals(TcpServer.TCPPREFIX_MESG)) {
+                            } else if (message.startsWith(TcpServer.TCPPREFIX_MESG, TcpServer.TCPMESSAGE_PREFIX.length())) {
                                 message = message.substring(TcpServer.TCPMESSAGE_PREFIX.length() + TcpServer.TCPPREFIX_MESG.length());
                                 if (message.startsWith(NetMsg.NETMSG_ELIMINATED)) {
                                     message = message.substring(NetMsg.NETMSG_ELIMINATED.length());
-                                    Byte id = (byte) (int) Integer.parseInt(message);
+                                    Byte id = (byte) Integer.parseInt(message);
                                     Intent intent = new Intent(NetMsg.NETMSG_ELIMINATED);
                                     intent.putExtra(UDPListenerService.INTENT_PLAYERID, id);
                                     sendBroadcast(intent);
@@ -231,8 +226,6 @@ public class TcpClient extends Service {
                 in.close();
                 os.close();
                 out.close();
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
             } catch (ConnectException e) {
                 Log.d(TAG, "Server not running: " + e.getLocalizedMessage());
             } catch (IOException e) {
@@ -256,7 +249,7 @@ public class TcpClient extends Service {
     public void sendPlayerNameChange() {
         try {
             JSONObject playerInfo = new JSONObject();
-            playerInfo.put(TcpServer.JSON_PLAYERID, (int) Globals.getInstance().mPlayerID);
+            playerInfo.put(TcpServer.JSON_PLAYERID, Globals.getInstance().mPlayerID);
             playerInfo.put(TcpServer.JSON_PLAYERNAMECHANGE, Globals.getInstance().mPlayerName);
             String message = TcpServer.TCPMESSAGE_PREFIX + TcpServer.TCPPREFIX_JSON + playerInfo.toString();
             sendTCPMessage(message);
@@ -273,7 +266,7 @@ public class TcpClient extends Service {
     private void sendPlayerInfo(boolean rejoin) {
         try {
             JSONObject playerInfo = new JSONObject();
-            playerInfo.put(TcpServer.JSON_PLAYERID, (int) Globals.getInstance().mPlayerID);
+            playerInfo.put(TcpServer.JSON_PLAYERID, Globals.getInstance().mPlayerID);
             playerInfo.put(TcpServer.JSON_PLAYERNAME, Globals.getInstance().mPlayerName);
             if (rejoin) {
                 Log.d(TAG, "Attempting to rejoin server");
@@ -292,12 +285,12 @@ public class TcpClient extends Service {
         if (Globals.getInstance().mPairedGrenadeID != 0)
             sendPlayerGrenade();
     }
-
+//TODO player presets
     public void sendPlayerSettings() {
         try {
             JSONObject playerSettings = new JSONObject();
             playerSettings.put(TcpServer.JSON_PLAYERSETTINGS, true);
-            playerSettings.put(TcpServer.JSON_PLAYERID, (int) Globals.getInstance().mPlayerID);
+            playerSettings.put(TcpServer.JSON_PLAYERID, Globals.getInstance().mPlayerID);
             playerSettings.put(TcpServer.JSON_HEALTH, Globals.getInstance().mFullHealth);
             playerSettings.put(TcpServer.JSON_RELOAD_SHOTS, Globals.getInstance().mFullReload);
             playerSettings.put(TcpServer.JSON_RELOAD_TIME, Globals.getInstance().mReloadTime);
@@ -310,6 +303,8 @@ public class TcpClient extends Service {
             playerSettings.put(TcpServer.JSON_SHOT_MODE_BURST3, Globals.getInstance().mAllowBurst3ShotMode);
             playerSettings.put(TcpServer.JSON_SHOT_MODE_AUTO, Globals.getInstance().mAllowAutoShotMode);
             playerSettings.put(TcpServer.JSON_FIRING_MODE, Globals.getInstance().mCurrentFiringMode);
+            playerSettings.put(TcpServer.JSON_PLAYER_PRESET, Globals.getInstance().mCurrentPlayerPreset);
+            playerSettings.put(TcpServer.JSON_WEAPON_PRESET, Globals.getInstance().mCurrentWeaponPreset);
             String message = TcpServer.TCPMESSAGE_PREFIX + TcpServer.TCPPREFIX_JSON + playerSettings.toString();
             sendTCPMessage(message);
         } catch (JSONException e) {
@@ -320,8 +315,8 @@ public class TcpClient extends Service {
     public void sendPlayerGrenade() {
         try {
             JSONObject playerGrenade = new JSONObject();
-            playerGrenade.put(TcpServer.JSON_PLAYERID, (int) Globals.getInstance().mPlayerID);
-            playerGrenade.put(TcpServer.JSON_PAIRED_GRENADE_ID, (int) Globals.getInstance().mPairedGrenadeID);
+            playerGrenade.put(TcpServer.JSON_PLAYERID, Globals.getInstance().mPlayerID);
+            playerGrenade.put(TcpServer.JSON_PAIRED_GRENADE_ID, Globals.getInstance().mPairedGrenadeID);
             String message = TcpServer.TCPMESSAGE_PREFIX + TcpServer.TCPPREFIX_JSON + playerGrenade.toString();
             sendTCPMessage(message);
         } catch (JSONException e) {
@@ -442,6 +437,10 @@ public class TcpClient extends Service {
                     playerSettings.allowShotModeBurst3 = setting.getBoolean(TcpServer.JSON_SHOT_MODE_BURST3);
                     playerSettings.allowShotModeAuto = setting.getBoolean(TcpServer.JSON_SHOT_MODE_AUTO);
                     playerSettings.firingMode = setting.getInt(TcpServer.JSON_FIRING_MODE);
+                    //TODo checks
+                    playerSettings.playerPreset = setting.getInt(TcpServer.JSON_PLAYER_PRESET);
+                    playerSettings.weaponPreset = setting.getInt(TcpServer.JSON_WEAPON_PRESET);
+
                     if (playerID == Globals.getInstance().mPlayerID) {
                         Globals.getInstance().mFullHealth = playerSettings.health;
                         Globals.getInstance().mFullReload = playerSettings.shots;
@@ -455,6 +454,9 @@ public class TcpClient extends Service {
                         Globals.getInstance().mAllowBurst3ShotMode = playerSettings.allowShotModeBurst3;
                         Globals.getInstance().mAllowAutoShotMode = playerSettings.allowShotModeAuto;
                         Globals.getInstance().mCurrentFiringMode = playerSettings.firingMode;
+                        //TODO checks
+                        Globals.getInstance().mCurrentPlayerPreset = playerSettings.playerPreset;
+                        Globals.getInstance().mCurrentWeaponPreset = playerSettings.weaponPreset;
                     }
                 }
                 Globals.getInstance().mPlayerSettingsSemaphore.release();
@@ -554,7 +556,7 @@ public class TcpClient extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            Log.e(TAG, action);
+            Log.e(TAG, Objects.requireNonNull(action));
             if (NetMsg.NETMSG_GPSLOCUPDATE.equals(action)) {
                 JSONObject gpsUpdate = new JSONObject();
                 try {

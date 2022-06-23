@@ -16,22 +16,6 @@
 
 package com.simplecoil.simplecoil;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -43,8 +27,17 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
-import javax.microedition.khronos.opengles.GL;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.util.Objects;
 
 public class UDPListenerService extends Service {
     private static final String TAG = "UDPSvc";
@@ -157,9 +150,9 @@ public class UDPListenerService extends Service {
                     return;
                 }
                 message = message.substring(2);
-                Byte team = (byte) (int) Integer.parseInt(message);
+                Byte team = (byte) Integer.parseInt(message);
                 Globals.getmTeamIPMapSemaphore();
-                if (team == Globals.getInstance().mPlayerID || (Globals.getInstance().mTeamIPMap.get(team) != null && !Globals.getInstance().mTeamIPMap.get(team).equals(ip))) {
+                if (team == Globals.getInstance().mPlayerID || (Globals.getInstance().mTeamIPMap.get(team) != null && !Objects.requireNonNull(Globals.getInstance().mTeamIPMap.get(team)).equals(ip))) {
                     Globals.getInstance().mTeamIPMapSemaphore.release();
                     Log.e(TAG, "2 Players using same ID!");
                     sendUDPMessage(NetMsg.MESSAGE_PREFIX + NetMsg.NETMSG_SAMETEAM, ip, LISTEN_PORT);
@@ -225,22 +218,20 @@ public class UDPListenerService extends Service {
             if (multicastLock != null && !multicastLock.isHeld()) multicastLock.acquire();
         }
 
-        UDPMessageThread = new Thread(new Runnable() {
-            public void run() {
-                while (keepListening) {
-                    try {
-                        InetAddress address = Globals.getIPAddress();
-                        if (mIsListService || address == null)
-                            address = InetAddress.getByName("0.0.0.0");
-                        listenForMessage(address, LISTEN_PORT, LISTEN_TIMEOUT_MS);
-                    } catch (Exception e) {
-                        Log.i(TAG, "no longer listening for UDP messages: " + e.getMessage());
-                    }
+        UDPMessageThread = new Thread(() -> {
+            while (keepListening) {
+                try {
+                    InetAddress address = Globals.getIPAddress();
+                    if (mIsListService || address == null)
+                        address = InetAddress.getByName("0.0.0.0");
+                    listenForMessage(address, LISTEN_PORT, LISTEN_TIMEOUT_MS);
+                } catch (Exception e) {
+                    Log.i(TAG, "no longer listening for UDP messages: " + e.getMessage());
                 }
-                Log.i(TAG, "Stopped listening for UDP messages");
-                if(multicastLock != null && multicastLock.isHeld()) multicastLock.release();
-                doneListening = true;
             }
+            Log.i(TAG, "Stopped listening for UDP messages");
+            if(multicastLock != null && multicastLock.isHeld()) multicastLock.release();
+            doneListening = true;
         });
         UDPMessageThread.start();
     }
@@ -326,23 +317,21 @@ public class UDPListenerService extends Service {
             serverIP = serverIP.substring(1);
         final String ip = serverIP;
         Log.e(TAG, "attempt to join " + ip);
-        Thread joinThread = new Thread(new Runnable() {
-            public void run() {
-                InetAddress ipAddr = null;
-                try {
-                    ipAddr = InetAddress.getByName(ip);
-                } catch (UnknownHostException e) {
-                    Log.e(TAG, "unknown host!");
-                    sendFailedJoin();
-                    return;
-                }
-                if (ipAddr == null) {
-                    Log.e(TAG, "ip is still null!");
-                    sendFailedJoin();
-                    return;
-                }
-                joinServer(ipAddr);
+        Thread joinThread = new Thread(() -> {
+            InetAddress ipAddr;
+            try {
+                ipAddr = InetAddress.getByName(ip);
+            } catch (UnknownHostException e) {
+                Log.e(TAG, "unknown host!");
+                sendFailedJoin();
+                return;
             }
+            if (ipAddr == null) {
+                Log.e(TAG, "ip is still null!");
+                sendFailedJoin();
+                return;
+            }
+            joinServer(ipAddr);
         });
         joinThread.start();
     }
@@ -418,12 +407,46 @@ public class UDPListenerService extends Service {
 
     public void sendUDPMessageAll(String message) {
         final String prefixedMessage = NetMsg.MESSAGE_PREFIX + message;
-        Thread sendThread = new Thread(new Runnable() {
-            public void run() {
-                while (mSendingMessage) {
-                    sleep(10);
+        Thread sendThread = new Thread(() -> {
+            while (mSendingMessage) {
+                sleep(10);
+            }
+            mSendingMessage = true;
+            Globals.getmIPTeamMapSemaphore();
+            for (InetAddress ip : Globals.getInstance().mIPTeamMap.keySet()) {
+                try {
+                    Log.d(TAG, "sending '" + prefixedMessage + "' to " + ip.toString() + ":" + LISTEN_PORT);
+                    DatagramSocket udpSocket = new DatagramSocket(0); // system will assign any unused port for sending
+                    byte[] buf = prefixedMessage.getBytes();
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length, ip, LISTEN_PORT);
+                    udpSocket.send(packet);
+                    udpSocket.close();
+                } catch (SocketException e) {
+                    Log.e(TAG, "Socket Error:", e);
+                } catch (IOException e) {
+                    //Log.e(TAG, "IO Error:", e);
+                    e.printStackTrace();
+                    Intent intent = new Intent(NetMsg.NETMSG_ERROR);
+                    intent.putExtra(INTENT_MESSAGE, e.getLocalizedMessage());
+                    sendBroadcast(intent);
                 }
-                mSendingMessage = true;
+            }
+            Globals.getInstance().mIPTeamMapSemaphore.release();
+            mSendingMessage = false;
+            Log.d(TAG, "send all finished");
+        });
+        sendThread.start();
+    }
+
+    public void sendUDPMessageAllRepeat(String message, final int repeatCount) {
+        final String prefixedMessage = NetMsg.MESSAGE_PREFIX + message;
+        Thread sendThread = new Thread(() -> {
+            while (mSendingMessage) {
+                sleep(10);
+            }
+            mSendingMessage = true;
+            int repeat = repeatCount;
+            while (repeat-- > 0) {
                 Globals.getmIPTeamMapSemaphore();
                 for (InetAddress ip : Globals.getInstance().mIPTeamMap.keySet()) {
                     try {
@@ -444,77 +467,37 @@ public class UDPListenerService extends Service {
                     }
                 }
                 Globals.getInstance().mIPTeamMapSemaphore.release();
-                mSendingMessage = false;
-                Log.d(TAG, "send all finished");
+                sleep(50);
             }
-        });
-        sendThread.start();
-    }
-
-    public void sendUDPMessageAllRepeat(String message, final int repeatCount) {
-        final String prefixedMessage = NetMsg.MESSAGE_PREFIX + message;
-        Thread sendThread = new Thread(new Runnable() {
-            public void run() {
-                while (mSendingMessage) {
-                    sleep(10);
-                }
-                mSendingMessage = true;
-                int repeat = repeatCount;
-                while (repeat-- > 0) {
-                    Globals.getmIPTeamMapSemaphore();
-                    for (InetAddress ip : Globals.getInstance().mIPTeamMap.keySet()) {
-                        try {
-                            Log.d(TAG, "sending '" + prefixedMessage + "' to " + ip.toString() + ":" + LISTEN_PORT);
-                            DatagramSocket udpSocket = new DatagramSocket(0); // system will assign any unused port for sending
-                            byte[] buf = prefixedMessage.getBytes();
-                            DatagramPacket packet = new DatagramPacket(buf, buf.length, ip, LISTEN_PORT);
-                            udpSocket.send(packet);
-                            udpSocket.close();
-                        } catch (SocketException e) {
-                            Log.e(TAG, "Socket Error:", e);
-                        } catch (IOException e) {
-                            //Log.e(TAG, "IO Error:", e);
-                            e.printStackTrace();
-                            Intent intent = new Intent(NetMsg.NETMSG_ERROR);
-                            intent.putExtra(INTENT_MESSAGE, e.getLocalizedMessage());
-                            sendBroadcast(intent);
-                        }
-                    }
-                    Globals.getInstance().mIPTeamMapSemaphore.release();
-                    sleep(50);
-                }
-                mSendingMessage = false;
-                Log.d(TAG, "send all repeat finished");
-            }
+            mSendingMessage = false;
+            Log.d(TAG, "send all repeat finished");
         });
         sendThread.start();
     }
 
     private void sendUDPMessage(final String message, final InetAddress ip, final Integer port) {
-        Thread sendThread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    while (mSendingMessage) {
-                        sleep(10);
-                    }
-                    mSendingMessage = true;
-                    Log.d(TAG, "sending '" + message + "' to " + ip.toString() + ":" + port);
-                    DatagramSocket udpSocket = new DatagramSocket(0); // system will assign any unused port for sending
-                    byte[] buf = message.getBytes();
-                    DatagramPacket packet = new DatagramPacket(buf, buf.length, ip, port);
-                    udpSocket.send(packet);
-                    udpSocket.close();
-                } catch (SocketException e) {
-                    Log.e(TAG, "Socket Error:", e);
-                } catch (IOException e) {
-                    //Log.e(TAG, "IO Error:", e);
-                    e.printStackTrace();
-                    Intent intent = new Intent(NetMsg.NETMSG_ERROR);
-                    intent.putExtra(INTENT_MESSAGE, e.getLocalizedMessage());
-                    sendBroadcast(intent);
+        Thread sendThread = new Thread(() -> {
+            try {
+                while (mSendingMessage) {
+                    sleep(10);
                 }
-                mSendingMessage = false;
+                mSendingMessage = true;
+                Log.d(TAG, "sending '" + message + "' to " + ip.toString() + ":" + port);
+                DatagramSocket udpSocket = new DatagramSocket(0); // system will assign any unused port for sending
+                byte[] buf = message.getBytes();
+                DatagramPacket packet = new DatagramPacket(buf, buf.length, ip, port);
+                udpSocket.send(packet);
+                udpSocket.close();
+            } catch (SocketException e) {
+                Log.e(TAG, "Socket Error:", e);
+            } catch (IOException e) {
+                //Log.e(TAG, "IO Error:", e);
+                e.printStackTrace();
+                Intent intent = new Intent(NetMsg.NETMSG_ERROR);
+                intent.putExtra(INTENT_MESSAGE, e.getLocalizedMessage());
+                sendBroadcast(intent);
             }
+            mSendingMessage = false;
         });
         sendThread.start();
     }
