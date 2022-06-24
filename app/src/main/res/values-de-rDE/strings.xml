@@ -109,8 +109,8 @@
     <string name="player_settings_lives">Leben</string>
     <string name="player_settings_reset">Auf Standard setzen</string>
     <string name="player_settings_apply_to_all">Auf alle Spieler Anwenden ?</string>
-    <string name="player_settings_allow_player_settings">Spilereigene einstellungen erlauben ?</string>
-    <string name="player_settings_not_allowed_toast">Spiler dürfen ihre einstellungen auf diesem Server nicht ändern</string>
+    <string name="player_settings_allow_player_settings">Spielereigene einstellungen erlauben ?</string>
+    <string name="player_settings_not_allowed_toast">Spieler dürfen ihre einstellungen auf diesem Server nicht ändern</string>
     <string name="player_settings_shot_modes_allowed">Feuer Modi erlaubt</string>
     <string name="player_settings_shot_mode_error">Mindestens ein Feuer Modus muss erlaubt sein!</string>
     <string name="player_settings_override_lives">Leben Limit überschreiben</string>
