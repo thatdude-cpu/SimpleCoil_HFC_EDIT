@@ -1,49 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_add_circle_green_50dp.xml" value="0.340625" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_battery_50_yellow_24dp.xml" value="0.340625" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_battery_80_blue_24dp.xml" value="0.340625" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_battery_alert_red_24dp.xml" value="0.196875" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_battery_full_green_24dp.xml" value="0.196875" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_error_red_100dp.xml" value="0.196875" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_error_yellow_100dp.xml" value="0.196875" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_flare_red_50dp.xml" value="0.196875" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_launcher_background.xml" value="0.340625" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_network_connected_24dp.xml" value="0.340625" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_network_disconnected_24dp.xml" value="0.340625" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_person_red_50dp.xml" value="0.340625" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_person_yellow_50dp.xml" value="0.340625" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_zoom_out_map_red_50dp.xml" value="0.340625" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_zoom_out_map_yellow_50dp.xml" value="0.340625" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/activity_dedicated_server.xml" value="0.5" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/activity_fullscreen.xml" value="0.33" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/blaster_disconnected_dialog.xml" value="0.11322463768115942" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/game_limit_dialog.xml" value="0.33" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/player_data_dialog.xml" value="0.22" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/player_display_data.xml" value="0.11322463768115942" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/player_display_data_client.xml" value="0.11322463768115942" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/player_name_dialog.xml" value="0.11322463768115942" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/player_settings_dialog.xml" value="0.25" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/server_ip_dialog.xml" value="0.328125" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/menu/firing_mode_menu.xml" value="0.18072916666666666" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/menu/game_mode_menu.xml" value="0.18072916666666666" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/menu/gps_mode_menu.xml" value="0.18072916666666666" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/menu/network_menu.xml" value="0.18072916666666666" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/menu/player_presets.xml" value="0.22" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/menu/weapon_presets.xml" value="0.18072916666666666" />
-        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.340625" />
-      </map>
-    </option>
-  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
-    <option name="myDefaultNotNull" value="android.annotation.NonNull" />
+    <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
     <option name="myNullables">
       <value>
-        <list size="15">
+        <list size="13">
           <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.Nullable" />
           <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nullable" />
           <item index="2" class="java.lang.String" itemvalue="javax.annotation.CheckForNull" />
@@ -57,14 +19,12 @@
           <item index="10" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableType" />
           <item index="11" class="java.lang.String" itemvalue="com.android.annotations.Nullable" />
           <item index="12" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.Nullable" />
-          <item index="13" class="java.lang.String" itemvalue="io.reactivex.annotations.Nullable" />
-          <item index="14" class="java.lang.String" itemvalue="io.reactivex.rxjava3.annotations.Nullable" />
         </list>
       </value>
     </option>
     <option name="myNotNulls">
       <value>
-        <list size="15">
+        <list size="12">
           <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
           <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
           <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
@@ -77,9 +37,6 @@
           <item index="9" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullType" />
           <item index="10" class="java.lang.String" itemvalue="com.android.annotations.NonNull" />
           <item index="11" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.NonNull" />
-          <item index="12" class="java.lang.String" itemvalue="io.reactivex.annotations.NonNull" />
-          <item index="13" class="java.lang.String" itemvalue="io.reactivex.rxjava3.annotations.NonNull" />
-          <item index="14" class="java.lang.String" itemvalue="lombok.NonNull" />
         </list>
       </value>
     </option>
