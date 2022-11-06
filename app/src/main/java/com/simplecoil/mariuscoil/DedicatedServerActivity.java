@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.simplecoil.simplecoil;
+package com.simplecoil.mariuscoil;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -58,9 +58,13 @@ public class DedicatedServerActivity extends AppCompatActivity implements PopupM
     private static final String TAG = "DEDSRV";
 
     private static final String PREF_GPS_MODE = "GPSMode";
-//TODO try catch when in no network to avoid crash
+//TODO try catch when in no network to avoid crash mybe deprecated
     //TODO TTT GAME MODE
-    //TODO BUG allow player settings isnt applied to all
+    //TODO BUG allow player settings isnt applied to all maybe fixed ?
+    //TODO force reload in dedicated server games when weapons are changing
+    //TODO damage application in simple network games doesnt work right now
+    //TODO fire mode preset force ,in dedicated and siumple games
+    //TODO add balance changes
     private TextView mServerIPTV = null;
     private Chronometer mGameTimer = null;
     private TextView mGameCountDownTV = null;

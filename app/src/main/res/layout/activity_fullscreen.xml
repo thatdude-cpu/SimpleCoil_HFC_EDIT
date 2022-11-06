@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#080808"
     android:id="@+id/main_view"
-    tools:context="com.simplecoil.simplecoil.FullscreenActivity">
+    tools:context="com.simplecoil.mariuscoil.FullscreenActivity">
 
 
     <ScrollView
@@ -124,7 +124,7 @@
 
         <fragment
             android:id="@+id/map_fragment"
-            android:name="com.simplecoil.simplecoil.MapFragment"
+            android:name="com.simplecoil.mariuscoil.MapFragment"
             android:layout_width="fill_parent"
             android:layout_height="400dp"
             android:layout_below="@id/health_pb"

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.simplecoil.simplecoil;
+package com.simplecoil.mariuscoil;
 
 import android.app.Service;
 import android.content.Context;
@@ -27,7 +27,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

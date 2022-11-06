@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#080808"
     android:id="@+id/main_view"
-    tools:context="com.simplecoil.simplecoil.FullscreenActivity">
+    tools:context="com.simplecoil.mariuscoil.FullscreenActivity">
 
 <RelativeLayout
     android:id="@+id/connect_layout"

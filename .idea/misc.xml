@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2805" />
+        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2805" />
+        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_launchernew_background.xml" value="0.2805" />
+        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/drawable/ic_network_connected_24dp.xml" value="0.2805" />
+        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/layout/player_settings_dialog.xml" value="0.25181159420289856" />
+        <entry key="..\:/Users/guy-gamer/StudioProjects/SimpleCoil/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2805" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
     <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />

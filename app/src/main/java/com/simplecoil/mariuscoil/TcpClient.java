@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.simplecoil.simplecoil;
+package com.simplecoil.mariuscoil;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;

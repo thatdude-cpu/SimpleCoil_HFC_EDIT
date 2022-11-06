@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.simplecoil.simplecoil;
+package com.simplecoil.mariuscoil;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
@@ -54,7 +54,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -1140,6 +1139,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopupMenu.O
     private void endGame() {
         Globals.getInstance().mGameState = Globals.GAME_STATE_NONE;
         Globals.getInstance().mOnlyServerSettings = false;
+      //TODO reset of playersetting after ecery game needs testing
+        Globals.getInstance().mAllowPlayerSettings = true;
         mFiringModeButton.setVisibility(View.VISIBLE);
         mStartGameButton.setVisibility(View.VISIBLE);
         mPlayerSettingsButton.setVisibility(View.VISIBLE);

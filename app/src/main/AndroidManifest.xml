@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.simplecoil.simplecoil">
+    package="com.simplecoil.mariuscoil">
 
     <!--
     Declare this required feature if you want to make the app available to BLE-capable
@@ -25,14 +25,14 @@
     <application
         android:allowBackup="true"
         android:fullBackupOnly="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launchernew"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launchernew_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".FullscreenActivity"
+            android:name="com.simplecoil.mariuscoil.FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="fullSensor"
@@ -46,20 +46,20 @@
         </activity>
 
         <service
-            android:name=".BluetoothLeService"
+            android:name="com.simplecoil.mariuscoil.BluetoothLeService"
             android:enabled="true" />
         <service
-            android:name=".UDPListenerService"
+            android:name="com.simplecoil.mariuscoil.UDPListenerService"
             android:enabled="true" />
         <service
-            android:name=".TcpClient"
+            android:name="com.simplecoil.mariuscoil.TcpClient"
             android:enabled="true" />
         <service
-            android:name=".TcpServer"
+            android:name="com.simplecoil.mariuscoil.TcpServer"
             android:enabled="true" />
 
         <activity
-            android:name=".DedicatedServerActivity"
+            android:name="com.simplecoil.mariuscoil.DedicatedServerActivity"
             android:label="@string/title_activity_dedicated_server"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

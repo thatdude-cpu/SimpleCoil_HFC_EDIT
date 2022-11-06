@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.simplecoil.simplecoil;
+package com.simplecoil.mariuscoil;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -164,7 +164,7 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mWeaponPresetButton.setText(R.string.weapon_preset_button);
                 break;
         }
-
+//TODO reset allowplayersetting to true after end of game. default must be true
         Globals.getInstance().mPlayerSettingsSemaphore.release();
         mApplyAllSwitch.setChecked(false);
         mAllowPlayerSettingsSwitch.setChecked(Globals.getInstance().mAllowPlayerSettings);
@@ -531,9 +531,9 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 //weapon
                 mWeaponPresetButton.setText(R.string.weapon_preset_lmg);
                 mWeaponPresetButton.setText(R.string.weapon_preset_lmg);
-                mShotModeAuto.setChecked(false);
+                mShotModeAuto.setChecked(true);
                 mShotModeBurst3.setChecked(false);
-                mShotModeSingle.setChecked(true);
+                mShotModeSingle.setChecked(false);
                 mReloadTimeET.setText("5000");
                 //max value due to shots being byte
                 mReloadShotsET.setText("127");
@@ -609,9 +609,9 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                     Globals.getInstance().mCurrentWeaponPreset = Globals.WEAPON_PRESET_LMG;
 
                 mWeaponPresetButton.setText(R.string.weapon_preset_lmg);
-                mShotModeAuto.setChecked(false);
+                mShotModeAuto.setChecked(true);
                 mShotModeBurst3.setChecked(false);
-                mShotModeSingle.setChecked(true);
+                mShotModeSingle.setChecked(false);
                 mReloadTimeET.setText("5000");
                 mReloadShotsET.setText("127");
                 mDamageET.setText("1");
