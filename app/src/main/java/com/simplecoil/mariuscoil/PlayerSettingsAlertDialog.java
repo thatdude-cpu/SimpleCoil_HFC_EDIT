@@ -534,9 +534,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mShotModeAuto.setChecked(true);
                 mShotModeBurst3.setChecked(false);
                 mShotModeSingle.setChecked(false);
-                mReloadTimeET.setText("5000");
-                //max value due to shots being byte
-                mReloadShotsET.setText("127");
+                mReloadTimeET.setText("7000");
+                mReloadShotsET.setText("80");
                 mDamageET.setText("1");
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
@@ -612,8 +611,8 @@ public class PlayerSettingsAlertDialog extends AlertDialog implements PopupMenu.
                 mShotModeAuto.setChecked(true);
                 mShotModeBurst3.setChecked(false);
                 mShotModeSingle.setChecked(false);
-                mReloadTimeET.setText("5000");
-                mReloadShotsET.setText("127");
+                mReloadTimeET.setText("7000");
+                mReloadShotsET.setText("80");
                 mDamageET.setText("1");
                 mReloadOnEmptySwitch.setChecked(false);
                 return true;
