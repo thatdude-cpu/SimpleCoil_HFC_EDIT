@@ -85,7 +85,7 @@ public class MapFragment extends GlobeMapFragment {
     private Location getLastBestLocation() {
         // We already have this permission because of Bluetooth, but Android Studio insists on having this code or it throws an error
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int hasLocationPermission = Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            int hasLocationPermission = requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             if (hasLocationPermission != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 return null;
@@ -224,13 +224,13 @@ public class MapFragment extends GlobeMapFragment {
         IntentFilter filter = new IntentFilter(NetMsg.NETMSG_GPSDATAUPDATE);
         filter.addAction(NetMsg.NETMSG_LISTPLAYERS);
         filter.addAction(NetMsg.NETMSG_GPSSETTING);
-        Objects.requireNonNull(getActivity()).registerReceiver(mGPSDataReceiver, filter);
+        requireActivity().registerReceiver(mGPSDataReceiver, filter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Objects.requireNonNull(getActivity()).unregisterReceiver(mGPSDataReceiver);
+        requireActivity().unregisterReceiver(mGPSDataReceiver);
     }
 
     @Override
@@ -266,7 +266,7 @@ public class MapFragment extends GlobeMapFragment {
                 mLatitude = 0;
                 mLocationListener = new MyLocationListener();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    int hasLocationPermission = Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+                    int hasLocationPermission = requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
                     if (hasLocationPermission != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                 1);
@@ -292,7 +292,7 @@ public class MapFragment extends GlobeMapFragment {
     protected void controlHasStarted() {
         // setup base layer tiles
         String cacheDirName = "empty";
-        File cacheDir = new File(Objects.requireNonNull(getActivity()).getCacheDir(), cacheDirName);
+        File cacheDir = new File(requireActivity().getCacheDir(), cacheDirName);
         cacheDir.mkdir();
         RemoteTileSource remoteTileSource = new RemoteTileSource(new RemoteTileInfo("http://localhost/", "png", 0, 18));
         remoteTileSource.setCacheDir(cacheDir);
@@ -334,7 +334,7 @@ public class MapFragment extends GlobeMapFragment {
 
         if (currentBestLocation == null) return;
         MarkerInfo markerInfo = new MarkerInfo();
-        Bitmap icon = BitmapFactory.decodeResource(Objects.requireNonNull(getActivity()).getResources(), R.drawable.ic_gps_you);
+        Bitmap icon = BitmapFactory.decodeResource(requireActivity().getResources(), R.drawable.ic_gps_you);
         Point2d markerSize = new Point2d(72, 72);
 
         ScreenMarker you = new ScreenMarker();
@@ -364,7 +364,7 @@ public class MapFragment extends GlobeMapFragment {
         int currentTeam = -1;
         if (Globals.getInstance().mGameMode != Globals.GAME_MODE_FFA)
             currentTeam = Globals.getInstance().calcNetworkTeam(Globals.getInstance().mPlayerID);
-        Bitmap teammate = BitmapFactory.decodeResource(Objects.requireNonNull(getActivity()).getResources(), R.drawable.ic_gps_teammate);
+        Bitmap teammate = BitmapFactory.decodeResource(requireActivity().getResources(), R.drawable.ic_gps_teammate);
         Bitmap enemy = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.ic_gps_enemy);
         Globals.getmGPSDataSemaphore();
         for (Map.Entry<Byte, Globals.GPSData> entry : Globals.getInstance().mGPSData.entrySet()) {
